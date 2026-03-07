@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     # return "Home Page"
-    return render_template("index.html")
+    return render_template("test.html")
 
 @app.route("/map.html")
 def map_html():
@@ -19,11 +19,11 @@ def map_png():
 def map_js():
     return send_from_directory("static/godot", "map.js")
 
-@app.route("/map.wasm")
+@app.route("/godot/map.wasm")
 def map_wasm():
     return send_from_directory("static/godot", "map.wasm")
 
-@app.route("/map.pck")
+@app.route("/godot/map.pck")
 def map_pck():
     return send_from_directory("static/godot", "map.pck")
 
