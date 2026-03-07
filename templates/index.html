@@ -3,9 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pocket Book-homepage</title>
+    <link rel="stylesheet" href="../static/homepage.css">
+    <script src="../static/homepage.js" defer></script>
 </head>
 <body>
-    
+    <header>
+        <a href="#">
+            <img id="logo" src="../static/images/logo.png" alt="UofT Logo">
+        </a>
+        <div class="auth">
+            <a href="#">Sign Up</a>
+            <a href="#">Log In</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="banner"></section>
+        <section class="container">
+            <nav>
+                <button id="map-btn" class="active">map</button>
+                <button id="all-schedules-btn">room schedules</button>
+                <button id="my-schedule-btn">my schedule</button>
+                <button id="services-btn">serives</button>
+            </nav>
+            <div class="content">
+                <div class="item show" id="map-container"></div>
+                <div class="item" id="all-schedules-container"></div>
+                <div class="item" id="my-schedule-container"></div>
+                <div class="item" id="services-container"></div>
+            </div>
+        </section>
+        <section class="banner"></section>
+    </main>
+
+    <footer></footer>
 </body>
 </html>
