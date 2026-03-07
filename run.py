@@ -1,4 +1,4 @@
-from flask import Flask, send_file, render_template, request
+from flask import Flask, send_file, render_template, request, send_from_directory
 
 app = Flask(__name__)
 
@@ -7,9 +7,21 @@ def home():
     # return "Home Page"
     return render_template("godot/map.html")
 
-@app.route('/map.html')
-def map():
-    return render_template('godot/map.html')
+@app.route("/map.html")
+def map_html():
+    return send_from_directory("static/godot", "map.html")
+
+@app.route("/map.js")
+def map_js():
+    return send_from_directory("static/godot", "map.js")
+
+@app.route("/map.wasm")
+def map_wasm():
+    return send_from_directory("static/godot", "map.wasm")
+
+@app.route("/map.pck")
+def map_pck():
+    return send_from_directory("static/godot", "map.pck")
 
 @app.route('/schedules.html')
 def schedules():
