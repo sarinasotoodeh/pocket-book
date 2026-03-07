@@ -5,11 +5,11 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     # return "Home Page"
-    return render_template("index.html")
+    return render_template("godot/map.html")
 
 @app.route('/map.html')
 def map():
-    return render_template('map.html')
+    return render_template('godot/map.html')
 
 @app.route('/schedules.html')
 def schedules():
