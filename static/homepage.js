@@ -13,10 +13,22 @@ let active_btn = map_btn
 let active_container = map_container
 load_page("map.html", map_container)
 
+let full_screen_btn = document.getElementById("full-screen-btn")
+
 map_btn.addEventListener("click", show_map)
 all_schedules_btn.addEventListener("click", show_all_schedules)
 my_schedule_btn.addEventListener("click", show_my_schedule)
 services_btn.addEventListener("click", show_services)
+full_screen_btn.addEventListener("click", toggle_full_screen)
+
+function toggle_full_screen(){
+    const elem = document.querySelector("main .content .show");
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen()
+    } else {
+        document.exitFullscreen();
+    }
+}
 
 function remove_classes() {
     active_btn.classList.remove("active")
