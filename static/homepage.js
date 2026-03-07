@@ -11,6 +11,7 @@ let services_container = document.getElementById("services-container")
 
 let active_btn = map_btn
 let active_container = map_container
+load_page("map.html", map_container)
 
 map_btn.addEventListener("click", show_map)
 all_schedules_btn.addEventListener("click", show_all_schedules)
