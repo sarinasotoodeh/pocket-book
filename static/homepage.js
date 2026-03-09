@@ -11,7 +11,6 @@ let services_container = document.getElementById("services-container")
 
 let active_btn = map_btn
 let active_container = map_container
-load_page("map.html", map_container)
 
 let full_screen_btn = document.getElementById("full-screen-btn")
 
@@ -22,11 +21,23 @@ services_btn.addEventListener("click", show_services)
 full_screen_btn.addEventListener("click", toggle_full_screen)
 
 function toggle_full_screen(){
-    const elem = document.querySelector("main .content .show");
+    const element = document.querySelector("main .content");
+    const full_screen_svg = document.getElementById("full-screen-svg")
+    const close_svg = document.getElementById("close-full-screen-svg")
     if (!document.fullscreenElement) {
-        elem.requestFullscreen()
+        element.requestFullscreen()
+        // change the button to close button
+        this.style.bottom = "calc(100% - 40px)"
+        this.style.right = "16px"
+        full_screen_svg.style.display = "none"
+        close_svg.style.display = "inline"
     } else {
         document.exitFullscreen();
+        // change the button back to full screen button
+        this.style.bottom = "10px"
+        this.style.right = "10px"
+        full_screen_svg.style.display = "inline"
+        close_svg.style.display = "none"
     }
 }
 
@@ -40,19 +51,10 @@ function add_classes() {
     active_container.classList.add("show")
 }
 
-function load_page(page, container) {
-    fetch(page)
-    .then(response => response.text())
-    .then(html => {
-        container.innerHTML = html;
-    })
-}
-
 function show_map() {
     remove_classes()
     active_btn = map_btn
     active_container = map_container
-    load_page("map.html", map_container)
     add_classes()
 }
 
@@ -60,7 +62,6 @@ function show_all_schedules(){
     remove_classes()
     active_btn = all_schedules_btn
     active_container = all_schedules_container
-    load_page("schedules.html", all_schedules_container)
     add_classes()
 }
 
@@ -68,7 +69,6 @@ function show_my_schedule(){
     remove_classes()
     active_btn = my_schedule_btn
     active_container = my_schedule_container
-    load_page("schedules.html", my_schedule_container)
     add_classes()
 }
 
@@ -76,6 +76,5 @@ function show_services() {
     remove_classes()
     active_btn = services_btn
     active_container = services_container
-    load_page("services.html", services_container)
     add_classes()
 }

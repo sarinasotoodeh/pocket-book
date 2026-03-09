@@ -19,10 +19,15 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
+    /* height: 90px; */
 }
 
-header #logo {
+header .logo {
     width: 200px;
+}
+
+header .logo-s {
+    width: 10px;
 }
 
 header .auth {
@@ -62,7 +67,8 @@ main {
     justify-content: space-between;
     gap: 0px;
     height: auto;
-    margin-top: 50px;
+    margin-top: calc((100vh - 90px)*0.075);
+    height: calc((100vh - 90px)*0.85);
 }
 
 main .banner {
@@ -72,7 +78,6 @@ main .banner {
 
 main .container {
     width: 70%;
-    height: 500px;
     border: 1px solid black;
 }
 
@@ -102,14 +107,20 @@ main .container nav button:hover {
 
 main .container .content {
     position: relative;
+    height: calc(100% - 43px);
 }
 
 main .container .content .item {
     display: none;
+    height: 100%;
 }
 
 main .container .content .show {
     display: block;
+}
+
+main .container .content .item iframe{
+    height: 100%;
 }
 
 main .container .content #full-screen-btn {
@@ -121,16 +132,24 @@ main .container .content #full-screen-btn {
     border: 0px;
     padding: 0px;
     background-color: transparent;
+    color: black;
+}
+
+main .container .content #full-screen-btn svg {
+    fill: black;
 }
 
 main .container .content .item:fullscreen {
     width: 100vw;
     height: 100vh;
-    background-color: red;
 }
 
 /* Small */
-@media screen and (max-width: 576px) {}
+@media screen and (max-width: 576px) {
+    header picture .logo {
+        width: 50px;
+    }
+}
 
 /* Medium */
 @media screen and (max-width: 768px) {
