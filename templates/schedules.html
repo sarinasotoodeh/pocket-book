@@ -1,11 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedules</title>
+    <link rel="stylesheet" href="../static/schedules.css">
 </head>
+
 <body>
-    <h1>Schedules</h1>
+    
+    <h1>
+        {% if mode == "all" %}
+        All Class Schedules
+        {% else %}
+        My Schedule
+        {% endif %}
+    </h1>
+
+    <div class="table-container">
+
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Type</th>
+                <th>Section</th>
+                <th>Instructor</th>
+                <th>Room</th>
+                <th>Day</th>
+                <th>Time</th>
+            </tr>
+
+            {% for row in schedules %}
+            <tr>
+                <td>{{ row.course_dept }}{{ row.course_code }}</td>
+                <td>{{ row.class_type }}</td>
+                <td>{{ row.section_code }}</td>
+                <td>{{ row.instructor_name }}</td>
+                <td>
+                    <!-- {{ row.delivery_mode}} -->
+                    {% if row.delivery_mode == "online" %}
+                    <span class="badge online">Online</span>
+                    {% else %}
+                    <span class="badge in-person">In Person</span>
+                    {% endif %}
+                </td>
+                <td>{{ row.day_of_week }}</td>
+                <td>{{ row.start_time }} - {{ row.end_time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
+
 </html>
