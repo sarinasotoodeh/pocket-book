@@ -3,9 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services</title>
+    <title>Food Spots</title>
+    <style>
+        body {
+            background: #f4f6f8;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .location-group {
+            margin: 24px auto;
+            max-width: 1000px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            padding: 14px;
+        }
+        .location-group h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #1f4a78;
+        }
+        .vendor-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fcfcfc;
+        }
+        .vendor-card header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .vendor-card h3 {
+            margin: 0;
+            margin-bottom: 4px;
+            font-size: 1.05rem;
+            line-height: 1.2;
+        }
+        .vendor-card .place-tag {
+            font-size: 0.88rem;
+            color: #555;
+            font-weight: 600;
+        }
+        .hours-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.94rem;
+        }
+        .hours-table th,
+        .hours-table td {
+            text-align: left;
+            padding: 6px 8px;
+            border-bottom: 1px solid #efefef;
+        }
+        .hours-table th {
+            width: 115px;
+            color: #444;
+            font-weight: 700;
+        }
+        .hours-table td {
+            color: #555;
+        }
+        .note {
+            font-size: 0.88rem;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Services</h1>
+    <h1>Campus Food Spots</h1>
+    <p class="note">Group by location. Add/update specific hours below each outlet as you get details.</p>
+
+    <div class="location-group" id="harmony-commons">
+        <h2>Harmony Commons Residence</h2>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Harmony Commons Dining Hall</h3>
+                <span class="place-tag">Residence Dining</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Monday</th><td>7am-11pm</td></tr>
+                <tr><th>Tuesday</th><td>7am-11pm</td></tr>
+                <tr><th>Wednesday</th><td>7am-11pm</td></tr>
+                <tr><th>Thursday</th><td>7am-11pm</td></tr>
+                <tr><th>Friday</th><td>7am-11pm</td></tr>
+                <tr><th>Saturday</th><td>9am-9pm</td></tr>
+                <tr><th>Sunday</th><td>9am-9pm</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="location-group" id="highland-hall">
+        <h2>Highland Hall</h2>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Hotpot and Tea</h3>
+                <span class="place-tag">HL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon</th><td>10:00am - 10:00pm</td></tr>
+                <tr><th>Tue</th><td>10:00am - 10:00pm</td></tr>
+                <tr><th>Wed</th><td>10:00am - 10:00pm</td></tr>
+                <tr><th>Thu</th><td>10:00am - 10:00pm</td></tr>
+                <tr><th>Fri</th><td>10:00am - 10:00pm</td></tr>
+                <tr><th>Sat</th><td>10:00am - 10:00pm</td></tr>
+                <tr><th>Sun</th><td>10:00am - 10:00pm</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="location-group" id="student-centre">
+        <h2>Student Centre</h2>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Asian Gourmet</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon-Fri</th><td>10am - 7:30pm</td></tr>
+                <tr><th>Sat-Sun</th><td>Closed</td></tr>
+            </table>
+        </div>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Bistro 1265</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon-Fri</th><td>11am - 7pm</td></tr>
+                <tr><th>Sat-Sun</th><td>Closed</td></tr>
+            </table>
+        </div>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Chatime</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon-Fri</th><td>11am - 7pm</td></tr>
+                <tr><th>Sat-Sun</th><td>Closed</td></tr>
+            </table>
+        </div>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Hero Certified Burgers</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon-Fri</th><td>8:30am - 10pm</td></tr>
+                <tr><th>Sat</th><td>9:30am - 8:30pm</td></tr>
+                <tr><th>Sun</th><td>10:30am - 8:15pm</td></tr>
+            </table>
+        </div>
+
+        <div class="vendor-card">
+            <header>
+                <h3>INS</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon-Fri</th><td>8am - 9pm</td></tr>
+                <tr><th>Sat-Sun</th><td>11am - 5:30pm</td></tr>
+            </table>
+        </div>
+
+        <div class="vendor-card">
+            <header>
+                <h3>KFC</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Daily</th><td>10am - 11pm</td></tr>
+            </table>
+        </div>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Pita Lite</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon-Fri</th><td>10am - 5pm</td></tr>
+                <tr><th>Sat-Sun</th><td>11am - 8pm</td></tr>
+            </table>
+        </div>
+
+        <div class="vendor-card">
+            <header>
+                <h3>Subway</h3>
+                <span class="place-tag">SL</span>
+            </header>
+            <table class="hours-table">
+                <tr><th>Mon-Fri</th><td>8am - 12am</td></tr>
+                <tr><th>Sat-Sun</th><td>10am - 10pm</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="location-group" id="market-place">
+        <h2>Market Place</h2>
+
+        <div class="vendor-card"><header><h3>Bao Mama</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Bento Sushi</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Chef’s Corner</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Chopsticks</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Osmows</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Pico and Lime</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Pizza Pizza</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Salad Bar</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10:30am - 6:30pm</td></tr><tr><th>Fri</th><td>10:30am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+    </div>
+
+    <div class="location-group" id="on-campus">
+        <h2>On Campus</h2>
+
+        <div class="vendor-card"><header><h3>Booster Juice</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>10am - 5pm</td></tr><tr><th>Fri</th><td>10am - 3pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Bottega</h3><span class="place-tag">HW</span></header><table class="hours-table"><tr><th>Mon-Thu</th><td>8am - 2:30pm</td></tr><tr><th>Fri</th><td>8am - 2pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Starbucks</h3><span class="place-tag">Meeting Place</span></header><table class="hours-table"><tr><th>Mon-Fri</th><td>8:00am - 7:30pm</td></tr><tr><th>Sat</th><td>Closed</td></tr><tr><th>Sun</th><td>10:30am - 4:30pm</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Tim Hortons</h3><span class="place-tag">BV</span></header><table class="hours-table"><tr><th>Mon-Fri</th><td>7:30am - 8pm</td></tr><tr><th>Sat</th><td>10am - 4pm</td></tr><tr><th>Sun</th><td>10am - 4:30pm</td></tr></table></div>
+    </div>
+
+    <div class="location-group" id="north-campus">
+        <h2>North Campus</h2>
+
+        <div class="vendor-card"><header><h3>CAFÉ DÉPÔT</h3><span class="place-tag">IA</span></header><table class="hours-table"><tr><th>Mon-Fri</th><td>7am - 7pm</td></tr><tr><th>Sat</th><td>Closed</td></tr><tr><th>Sun</th><td>10:30am - 4:30pm</td></tr></table></div>
+        <div class="vendor-card"><header><h3>La Prep</h3><span class="place-tag">IC</span></header><table class="hours-table"><tr><th>Mon-Fri</th><td>8am - 5pm</td></tr><tr><th>Sat-Sun</th><td>Closed</td></tr></table></div>
+    </div>
+
+    <div class="location-group" id="tpasc">
+        <h2>TPASC</h2>
+
+        <div class="vendor-card"><header><h3>Booster Juice</h3><span class="place-tag">TPASC</span></header><table class="hours-table"><tr><th>Mon-Fri</th><td>9am - 7pm</td></tr><tr><th>Sat-Sun</th><td>10am - 7pm</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Pizza Pizza</h3><span class="place-tag">TPASC</span></header><table class="hours-table"><tr><th>Daily</th><td>11am - 5pm</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Poolsides Bar and Grill</h3><span class="place-tag">TPASC</span></header><table class="hours-table"><tr><th>Mon-Fri</th><td>11am - 5pm</td></tr><tr><th>Sat</th><td>11am - 5pm</td></tr><tr><th>Sun</th><td>Closed</td></tr></table></div>
+        <div class="vendor-card"><header><h3>Tim Hortons</h3><span class="place-tag">TPASC</span></header><table class="hours-table"><tr><th>Daily</th><td>7am - 8pm</td></tr></table></div>
+    </div>
+
+    <p class="note">© 2026 UTSC Food & Beverages.</p>
 </body>
 </html>
