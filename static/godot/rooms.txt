@@ -1,0 +1,16 @@
+rID,building_name.room_number,room_name
+11,IA,110,Study Room A
+12,IA,111,Classroom A
+13,IA,115,The Big Hall
+14,IA,113,Classroom Tiny
+15,IA,112,Study Room B
+16,IA,100,Dining Room
+21,IA,210,Conveyor
+22,IA,211,Classroom B
+23,IA,212,Storage Room A
+24,IA,250A,Decompression Room
+25,IA,213,Classroom Loong
+26,IA,221,FSG Room Green
+27,IA,220,FSG Room Red
+28,IA,267,Female Washroom
+29,IA,268,Male Washroom

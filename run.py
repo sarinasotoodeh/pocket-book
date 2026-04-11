@@ -26,13 +26,17 @@ def map_png():
 def map_js():
     return send_from_directory("static/godot", "map.js")
 
-@app.route("/godot/map.wasm")
+@app.route("/map.wasm")
 def map_wasm():
     return send_from_directory("static/godot", "map.wasm")
 
-@app.route("/godot/map.pck")
+@app.route("/map.pck")
 def map_pck():
     return send_from_directory("static/godot", "map.pck")
+
+@app.route("/map.side.wasm")
+def map_side_wasm():
+    return send_from_directory("static/godot", "map.side.wasm")
 
 @app.route("/schedules")
 def all_schedules():
