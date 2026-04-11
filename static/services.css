@@ -1,0 +1,73 @@
+body {
+    background: #f4f6f8;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 20px;
+    color: #333;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 14px;
+}
+.location-group {
+    margin: 24px auto;
+    max-width: 1000px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    padding: 14px;
+}
+.location-group h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #1f4a78;
+}
+.vendor-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #fcfcfc;
+}
+.vendor-card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+.vendor-card h3 {
+    margin: 0;
+    margin-bottom: 4px;
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+.vendor-card .place-tag {
+    font-size: 0.88rem;
+    color: #555;
+    font-weight: 600;
+}
+.hours-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+}
+.hours-table th,
+.hours-table td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #efefef;
+}
+.hours-table th {
+    width: 115px;
+    color: #444;
+    font-weight: 700;
+}
+.hours-table td {
+    color: #555;
+}
+.note {
+    font-size: 0.88rem;
+    color: #666;
+    margin-top: 10px;
+}

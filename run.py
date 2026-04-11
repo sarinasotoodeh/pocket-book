@@ -54,7 +54,6 @@ def all_schedules():
 @app.route("/my-schedule/<int:student_id>")
 def my_schedule(student_id):
     conn = get_db_connection()
-    # after log in is implemented: student_id = session["student_id"] 
     schedules = conn.execute("""
         SELECT c.*
         FROM student_classes sc
