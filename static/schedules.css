@@ -38,7 +38,8 @@ table {
 }
 
 th {
-    background-color: #4CAF50;
+    background-color:#264682;
+ ;
     color: white;
     text-align: left;
     padding: 12px;
@@ -67,7 +68,7 @@ tr:hover {
 
 
 .in-person {
-    background-color: #4CAF50;
+    background-color: #264682;
 }
 
 .online {
@@ -83,7 +84,7 @@ tr:hover {
 .view-tabs button {
     margin: 0 6px;
     padding: 10px 20px;
-    border: 1px solid #4CAF50;
+    border: 1px solid #264682;
     border-radius: 6px;
     background: #fff;
     cursor: pointer;
@@ -93,7 +94,7 @@ tr:hover {
 
 .view-tabs button.active,
 .view-tabs button:hover {
-    background: #4CAF50;
+    background: #264682;
     color: #fff;
 }
 
@@ -132,7 +133,7 @@ tr:hover {
 }
 
 .class-card.in-person {
-    border-left: 4px solid #4CAF50;
+    border-left: 4px solid #264682;
 }
 
 .class-card.online {
