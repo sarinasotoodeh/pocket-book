@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedules</title>
+    <link rel="stylesheet" href="../static/schedules.css">
+</head>
+
+<body>
+    
+    <h1>
+        {% if mode == "all" %}
+        All Class Schedules
+        {% else %}
+        My Schedule
+        {% endif %}
+    </h1>
+
+    <div class="view-tabs">
+        <button id="table-view-btn" class="active">Table View</button>
+        <button id="weekly-view-btn">Weekly Timetable</button>
+    </div>
+
+    <div id="table-view" class="table-container">
+
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Type</th>
+                <th>Section</th>
+                <th>Instructor</th>
+                <th>Room</th>
+                <th>Day</th>
+                <th>Time</th>
+            </tr>
+
+            {% for row in schedules %}
+            <tr>
+                <td>{{ row.course_dept }}{{ row.course_code }}</td>
+                <td>{{ row.class_type }}</td>
+                <td>{{ row.section_code }}</td>
+                <td>{{ row.instructor_name }}</td>
+                <td>
+                    <!-- {{ row.delivery_mode}} -->
+                    {% if row.delivery_mode == "online" %}
+                    <span class="badge online">Online</span>
+                    {% else %}
+                    <span class="badge in-person">In Person</span>
+                    {% endif %}
+                </td>
+                <td>{{ row.day_of_week }}</td>
+                <td>{{ row.start_time }} - {{ row.end_time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div id="weekly-view" class="table-container" style="display:none;">
+        <div id="weekly-schedule">
+            <!-- Weekly timetable injected by JS -->
+        </div>
+    </div>
+
+    <script>
+        const scheduleData = [
+            {% for row in schedules %}
+            {
+                course: "{{ row.course_dept }}{{ row.course_code }}",
+                type: "{{ row.class_type }}",
+                section: "{{ row.section_code }}",
+                instructor: "{{ row.instructor_name }}",
+                room: "{{ row.building_name }} {{ row.room_number }}",
+                delivery: "{{ row.delivery_mode }}",
+                day: "{{ row.day_of_week }}",
+                time: "{{ row.start_time }} - {{ row.end_time }}"
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const normalizeDay = (d) => {
+            if (!d) return "Unknown";
+            const key = d.toLowerCase().trim();
+            const map = {
+                'm': 'Monday', 'mon': 'Monday', 'monday': 'Monday',
+                't': 'Tuesday', 'tu': 'Tuesday', 'tue': 'Tuesday', 'tues': 'Tuesday', 'tuesday': 'Tuesday',
+                'w': 'Wednesday', 'wed': 'Wednesday', 'wednesday': 'Wednesday',
+                'th': 'Thursday', 'thur': 'Thursday', 'thurs': 'Thursday', 'thursday': 'Thursday',
+                'f': 'Friday', 'fri': 'Friday', 'friday': 'Friday',
+                'sat': 'Saturday', 'saturday': 'Saturday',
+                'sun': 'Sunday', 'sunday': 'Sunday'
+            };
+            return map[key] || d;
+        };
+
+        function renderWeeklyView() {
+            const container = document.getElementById('weekly-schedule');
+            const grouped = {}; 
+            dayOrder.forEach(day => grouped[day] = []);
+            scheduleData.forEach(item => {
+                const dayName = normalizeDay(item.day);
+                if (!grouped[dayName]) grouped[dayName] = [];
+                grouped[dayName].push(item);
+            });
+
+            let html = '<div class="weekly-grid">';
+            for (const day of dayOrder) {
+                const items = grouped[day] || [];
+                html += `<div class="weekly-day"><h3>${day}</h3>`;
+                if (items.length === 0) {
+                    html += '<p class="empty-day">No classes</p>';
+                } else {
+                    items.sort((a, b) => a.time.localeCompare(b.time));
+                    items.forEach(cls => {
+                        html += `<div class="class-card ${cls.delivery === 'online' ? 'online' : 'in-person'}">
+                            <strong>${cls.course}</strong> <span>${cls.section}</span>
+                            <div>${cls.time}</div>
+                            <div>${cls.room}</div>
+                            <div>${cls.instructor}</div>
+                        </div>`;
+                    });
+                }
+                html += '</div>';
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        document.getElementById('table-view-btn').addEventListener('click', () => {
+            document.getElementById('table-view').style.display = 'block';
+            document.getElementById('weekly-view').style.display = 'none';
+            document.getElementById('table-view-btn').classList.add('active');
+            document.getElementById('weekly-view-btn').classList.remove('active');
+        });
+
+        document.getElementById('weekly-view-btn').addEventListener('click', () => {
+            document.getElementById('table-view').style.display = 'none';
+            document.getElementById('weekly-view').style.display = 'block';
+            document.getElementById('table-view-btn').classList.remove('active');
+            document.getElementById('weekly-view-btn').classList.add('active');
+            renderWeeklyView();
+        });
+    </script>
+</body>
+
+</html>
