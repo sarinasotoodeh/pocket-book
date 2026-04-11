@@ -3,7 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-DATABASE = "database.db"
+DATABASE = "Updated Database/database.db"
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -43,8 +43,10 @@ def all_schedules():
     conn = get_db_connection()
 
     schedules = conn.execute("""
-        SELECT * FROM classes
-        ORDER BY building_name, room_number, day_of_week, start_time
+        SELECT c.*, r.building_name, r.room_number, r.room_name
+        FROM classes c
+        JOIN rooms r ON c.rID = r.rID
+        ORDER BY r.building_name, r.room_number, c.day, c.start_time;
     """).fetchall()
 
     conn.close()
@@ -58,9 +60,9 @@ def my_schedule(student_id):
     schedules = conn.execute("""
         SELECT c.*
         FROM student_classes sc
-        JOIN classes c ON sc.class_id = c.class_id
+        JOIN classes c ON sc.class_id = c.cID
         WHERE sc.student_id = ?
-        ORDER BY day_of_week, start_time
+        ORDER BY c.day, c.start_time;
     """, (student_id,)).fetchall()
 
     conn.close()
