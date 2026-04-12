@@ -110,50 +110,67 @@ def services():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        # 1. Grab EVERY field required by your schema
         username = request.form.get('username')
         password = request.form.get('password')
+        fullname = request.form.get('fullname')
+        email = request.form.get('email')
+        student_num = request.form.get('student_number')
         
         conn = get_db_connection()
-        # Only check and insert the two fields you actually have
-        user = conn.execute("SELECT * FROM students WHERE name = ?", (username,)).fetchone()
         
+        # 2. Check if user already exists
+        user = conn.execute("SELECT * FROM students WHERE username = ?", (username,)).fetchone()
         if user:
             conn.close()
             return "exists"
         
-        conn.execute('INSERT INTO students (name, password) VALUES (?, ?)', (username, password))
-        conn.commit()
-        conn.close()
-        
-        resp = make_response("success")
-        resp.set_cookie('isLoggedIn', 'true', max_age=10000)
-        resp.set_cookie('user', username, max_age=10000)
-        return resp
+        try:
+            # 3. Insert matching your specific column names
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO students (student_number, full_name, email, username, password) 
+                VALUES (?, ?, ?, ?, ?)
+            ''', (student_num, fullname, email, username, password))
+            
+            new_id = cursor.lastrowid 
+            conn.commit()
+            
+            resp = make_response("success")
+            resp.set_cookie('isLoggedIn', 'true', max_age=10000)
+            resp.set_cookie('user', username, max_age=10000)
+            resp.set_cookie('student_id', str(new_id), max_age=10000)
+            return resp
+            
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return "error"
+        finally:
+            conn.close()
 
-    # This runs when you just click a link to visit the page
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # This part runs ONLY when the login form is submitted
         username = request.form.get('username')
         password = request.form.get('password')
         
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM students WHERE name = ? AND password = ?', 
+        # Matches your 'username' column
+        user = conn.execute('SELECT * FROM students WHERE username = ? AND password = ?', 
                             (username, password)).fetchone()
         conn.close()
         
         if user:
             resp = make_response("success")
-            resp.set_cookie('isLoggedIn', 'true', max_age=31536000)
-            resp.set_cookie('user', username, max_age=31536000)
+            resp.set_cookie('isLoggedIn', 'true', max_age=10000)
+            resp.set_cookie('user', username, max_age=10000)
+            resp.set_cookie('student_id', str(user['sID']), max_age=10000) 
             return resp
         
         return "invalid"
-
-    # This renders the login.html file when you navigate to /login
     return render_template('login.html')
 
-app.run()
+if __name__ == "__main__":
+    app.run(debug=True)
