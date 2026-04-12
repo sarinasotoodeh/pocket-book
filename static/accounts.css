@@ -1,0 +1,123 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Verdana', 'Geneva', sans-serif;
+}
+
+body {
+    background: #243662;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #243662;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    height: 90px;
+}
+
+header .logo {
+    width: 200px;
+}
+
+main {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    margin-top: calc((100vh - 90px) * 0.075);
+    height: calc((100vh - 90px) * 0.85);
+}
+
+main .banner {
+    width: 15%;
+    background-color: #243662;
+}
+
+main .container {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+/* THE BORDERED LOGIN BOX */
+.form-box {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    text-align: center;
+    background: white;
+    border: 3px solid #243662; /* The 3px outline */
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    font-weight: 300;
+    color: #243662;
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #337691;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 300;
+    font-size: 18px;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #081D40;
+}
+
+.link-text {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #666;
+}
+
+.link-text a {
+    color: #243662;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #243662;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 8px;
+    border: 2px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 9999; /* Ensures it stays on top of headers/banners */
+    font-size: 9px;
+}

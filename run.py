@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, make_response
 import sqlite3
 
 app = Flask(__name__)
@@ -71,5 +71,56 @@ def my_schedule(student_id):
 def services():
     return render_template('services.html')
 
+# Login + Register (Tuna + Rhianna)
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        # This part runs ONLY when the JS 'fetch' sends data
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        conn = get_db_connection()
+        query = "SELECT * FROM students WHERE name = ?"
+        user = conn.execute(query, (username,)).fetchone()
+        
+        if user:
+            conn.close()
+            return "exists"
+        
+        conn.execute('INSERT INTO students (name, password) VALUES (?, ?)', (username, password))
+        conn.commit()
+        conn.close()
+        
+        resp = make_response("success")
+        resp.set_cookie('isLoggedIn', 'true', max_age=10000)
+        resp.set_cookie('user', username, max_age=10000)
+        return resp
+
+    # This runs when you just click a link to visit the page
+    return render_template('signup.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # This part runs ONLY when the login form is submitted
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        conn = get_db_connection()
+        user = conn.execute('SELECT * FROM students WHERE name = ? AND password = ?', 
+                            (username, password)).fetchone()
+        conn.close()
+        
+        if user:
+            resp = make_response("success")
+            resp.set_cookie('isLoggedIn', 'true', max_age=31536000)
+            resp.set_cookie('user', username, max_age=31536000)
+            return resp
+        
+        return "invalid"
+
+    # This renders the login.html file when you navigate to /login
+    return render_template('login.html')
 
 app.run()
