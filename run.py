@@ -110,13 +110,12 @@ def services():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        # This part runs ONLY when the JS 'fetch' sends data
         username = request.form.get('username')
         password = request.form.get('password')
         
         conn = get_db_connection()
-        query = "SELECT * FROM students WHERE name = ?"
-        user = conn.execute(query, (username,)).fetchone()
+        # Only check and insert the two fields you actually have
+        user = conn.execute("SELECT * FROM students WHERE name = ?", (username,)).fetchone()
         
         if user:
             conn.close()
