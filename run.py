@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, send_from_directory, make_response
-import sqlite3
+
 
 app = Flask(__name__)
 
-DATABASE = "database.db"
+DATABASE = "Updated Database/database.db"
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -12,7 +12,8 @@ def get_db_connection():
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    print("Rendering index.html with student_id=1")
+    return render_template("index.html", student_id="1")
 
 @app.route("/map.html")
 def map_html():
@@ -40,11 +41,14 @@ def map_side_wasm():
 
 @app.route("/schedules")
 def all_schedules():
+    print("Fetching all schedules from the database")
     conn = get_db_connection()
 
     schedules = conn.execute("""
-        SELECT * FROM classes
-        ORDER BY building_name, room_number, day_of_week, start_time
+        SELECT c.*, r.building_name, r.room_number, r.room_name
+        FROM classes c
+        JOIN rooms r ON c.rID = r.rID
+        ORDER BY r.building_name, r.room_number, c.day, c.start_time;
     """).fetchall()
 
     conn.close()
@@ -53,14 +57,17 @@ def all_schedules():
 
 @app.route("/my-schedule/<int:student_id>")
 def my_schedule(student_id):
+    print(f"Fetching schedule for student_id={student_id} from the database")
     conn = get_db_connection()
     # after log in is implemented: student_id = session["student_id"] 
+
     schedules = conn.execute("""
-        SELECT c.*
-        FROM student_classes sc
-        JOIN classes c ON sc.class_id = c.class_id
-        WHERE sc.student_id = ?
-        ORDER BY day_of_week, start_time
+        SELECT c.*, r.building_name, r.room_number, r.room_name
+        FROM classes c
+        JOIN rooms r ON c.rID = r.rID
+        JOIN student_classes sc ON c.cID = sc.cID
+        WHERE sc.sID = ?
+        ORDER BY r.building_name, r.room_number, c.day, c.start_time;
     """, (student_id,)).fetchall()
 
     conn.close()
@@ -69,7 +76,33 @@ def my_schedule(student_id):
 
 @app.route('/services.html')
 def services():
-    return render_template('services.html')
+    conn = get_db_connection()
+    rows = conn.execute("""
+        SELECT rID, name, day, start_time, end_time, price_range
+        FROM food_spots
+        ORDER BY name, day
+    """).fetchall()
+    conn.close()
+
+    vendors = defaultdict(list)
+
+    for row in rows:
+        vendors[row["name"]].append({
+            "day": row["day"],
+            "start_time": row["start_time"],
+            "end_time": row["end_time"],
+            "price_range": row["price_range"]
+        })
+    vendor_list = []
+    for name, hours in vendors.items():
+        vendor_list.append({
+            "name": name,
+            "location_id": name.lower().replace(" ", "-").replace("&", "and"),
+            "place_tag": hours[0]["price_range"] if hours else "",
+            "hours": hours
+        })
+
+    return render_template('services.html', vendors=vendor_list)
 
 # Login + Register (Tuna + Rhianna)
 

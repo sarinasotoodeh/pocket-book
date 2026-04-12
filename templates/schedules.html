@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedules</title>
     <link rel="stylesheet" href="../static/schedules.css">
+    <script src="../static/schedules.js" defer></script>
 </head>
 
 <body>
@@ -28,7 +29,6 @@
         <table>
             <tr>
                 <th>Course</th>
-                <th>Type</th>
                 <th>Section</th>
                 <th>Instructor</th>
                 <th>Room</th>
@@ -38,19 +38,11 @@
 
             {% for row in schedules %}
             <tr>
-                <td>{{ row.course_dept }}{{ row.course_code }}</td>
-                <td>{{ row.class_type }}</td>
-                <td>{{ row.section_code }}</td>
-                <td>{{ row.instructor_name }}</td>
-                <td>
-                    <!-- {{ row.delivery_mode}} -->
-                    {% if row.delivery_mode == "online" %}
-                    <span class="badge online">Online</span>
-                    {% else %}
-                    <span class="badge in-person">In Person</span>
-                    {% endif %}
-                </td>
-                <td>{{ row.day_of_week }}</td>
+                <td>{{ row.dept }}{{ row.code }}</td>
+                <td>{{ row.section }}</td>
+                <td>{{ row.instructor }}</td>
+                <td>{{ row.building_name }} {{ row.room_number }}</td>
+                <td>{{ row.day }}</td>
                 <td>{{ row.start_time }} - {{ row.end_time }}</td>
             </tr>
             {% endfor %}
@@ -59,21 +51,21 @@
 
     <div id="weekly-view" class="table-container" style="display:none;">
         <div id="weekly-schedule">
-            <!-- Weekly timetable injected by JS -->
+            
         </div>
     </div>
 
+    
     <script>
         const scheduleData = [
             {% for row in schedules %}
             {
-                course: "{{ row.course_dept }}{{ row.course_code }}",
-                type: "{{ row.class_type }}",
+                course: "{{ row.dept }}{{ row.code }}",
                 section: "{{ row.section_code }}",
-                instructor: "{{ row.instructor_name }}",
+                instructor: "{{ row.instructor }}",
                 room: "{{ row.building_name }} {{ row.room_number }}",
                 delivery: "{{ row.delivery_mode }}",
-                day: "{{ row.day_of_week }}",
+                day: "{{ row.day }}",
                 time: "{{ row.start_time }} - {{ row.end_time }}"
             }{% if not loop.last %},{% endif %}
             {% endfor %}
