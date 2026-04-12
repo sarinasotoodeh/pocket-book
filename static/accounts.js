@@ -1,39 +1,37 @@
-const signupForm = document.querySelector('form[action="/signup"]'); // Selection by action
-if (signupForm) {
-    signupForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const formData = new FormData(signupForm);
-        const response = await fetch('/signup', { method: 'POST', body: formData });
+// This works for both login.html and signup.html because it looks for ANY form
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Stop the page from refreshing
+
+        // 1. Pack up the form data and send it to the server
+        // form.action is automatically /login or /signup based on your HTML
+        const response = await fetch(form.action, { 
+            method: 'POST', 
+            body: new FormData(form) 
+        });
+
+        // 2. Wait for the server's plain-text response ("success", "exists", etc.)
         const result = await response.text();
 
-        if (result === "exists") {
-            alert("This UTORid is already taken.");
-        } else if (result === "success") {
-            const popup = document.getElementById('popup');
-            popup.innerText = 'Account created! Redirecting...';
-            popup.style.display = 'block';
-            setTimeout(() => { window.location.href = '/'; }, 3000);
+        // 3. Logic for Signup Page
+        if (form.action.includes('/signup')) {
+            if (result === "exists") {
+                alert("This UTORid is already taken. Please try another.");
+            } else if (result === "success") {
+                alert("Account created! Redirecting to login page...");
+                window.location.href = "/login";
+            }
+        } 
+        
+        // 4. Logic for Login Page
+        else if (form.action.includes('/login')) {
+            if (result === "success") {
+                alert("Login successful! Welcome back.");
+                window.location.href = "/"; // Redirect to homepage
+            } else {
+                // Flask returns "invalid" if username/password don't match
+                alert("Invalid UTORid or password. Please try again.");
+            }
         }
     });
-}
-
-const loginForm = document.querySelector('form[action="/login"]');
-if (loginForm) {
-    loginForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        const response = await fetch('/login', { method: 'POST', body: formData });
-        const result = await response.text();
-
-        if (result === "user_not_found") {
-            alert("UTORid not found. Please sign up first.");
-        } else if (result === "wrong_password") {
-            alert("Incorrect password. Please try again.");
-        } else if (result === "success") {
-            const popup = document.getElementById('popup');
-            popup.innerText = 'Welcome back! Redirecting...';
-            popup.style.display = 'block';
-            setTimeout(() => { window.location.href = '/'; }, 2000);
-        }
-    });
-}
+});
