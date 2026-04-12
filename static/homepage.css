@@ -12,6 +12,15 @@ a {
     transition: .3s;
 }
 
+body {
+    /* background-color: #243662; */
+}
+
+#background {
+    background-color: #243662;
+    height: calc((100vh - 90px)*0.075);
+    width: 100%;
+}
 
 header {
     background-color: #243662;
