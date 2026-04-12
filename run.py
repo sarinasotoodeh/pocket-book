@@ -56,6 +56,7 @@ def all_schedules():
 
     return render_template("schedules.html", schedules=schedules, mode="all")
 
+
 @app.route("/my-schedule/<int:student_id>")
 def my_schedule(student_id):
     print(f"Fetching schedule for student_id={student_id} from the database")
@@ -105,7 +106,52 @@ def services():
 
     return render_template('services.html', vendors=vendor_list)
 
-# Login + Register (Tuna + Rhianna)
+# Login + Register + Add schedule (Tuna + Rhianna)
+
+@app.route("/add_schedule", methods=['GET', 'POST'])
+def add_schedule():
+    # We still need the student_id to know WHOSE schedule to add to
+    student_id = request.cookies.get('student_id')
+    
+    if request.method == 'POST':
+        # Steal data from the form
+        dept = request.form.get('dept')
+        code = request.form.get('code')
+        section = request.form.get('section')
+        room_id = request.form.get('rID')
+        day = request.form.get('day')
+        start = request.form.get('start_time')
+        end = request.form.get('end_time')
+
+        conn = get_db_connection()
+        try:
+            cursor = conn.cursor()
+            
+            # Insert the class into the main pool
+            cursor.execute('''
+                INSERT INTO classes (code, dept, section, rID, day, start_time, end_time) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (code, dept, section, room_id, day, start, end))
+            
+            new_class_id = cursor.lastrowid 
+
+            # Link this specific student to that class
+            cursor.execute('''
+                INSERT INTO student_classes (sID, cID) 
+                VALUES (?, ?)
+            ''', (student_id, new_class_id))
+            
+            conn.commit()
+            return "success" # JS is waiting for this string
+            
+        except Exception as e:
+            print(f"Error: {e}")
+            return "error"
+        finally:
+            conn.close()
+
+    # If it's a GET request, just show the page hehe haha
+    return render_template('add_schedule.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
