@@ -11,10 +11,17 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 @app.route("/")
 def home():
-    print("Rendering index.html with student_id=1")
-    return render_template("index.html", student_id="1")
+    sID = request.cookies.get('student_id')
+    if sID:
+        print(f"Loading index with sID: {sID}")
+        return render_template("index.html", student_number = sID)
+    else:
+        # sID = -1 represents not logged in
+        print(f"Loading index with sID: -1 so no user :) hehe")
+        return render_template("index.html", student_number = -1)
 
 @app.route("/map.html")
 def map_html():
@@ -175,17 +182,22 @@ def signup():
             # 3. Insert matching your specific column names
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO students (student_number, full_name, email, username, password) 
-                VALUES (?, ?, ?, ?, ?)
-            ''', (student_num, fullname, email, username, password))
+                SELECT MAX(sID) as num FROM students;
+                           ''')
+            new_sID = cursor.fetchone()['num'] + 1
+            print(new_sID)
+            cursor.execute('''
+                INSERT INTO students (sID, student_number, full_name, email, username, password) 
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (new_sID, student_num, fullname, email, username, password))
             
             new_id = cursor.lastrowid 
             conn.commit()
             
             resp = make_response("success")
-            resp.set_cookie('isLoggedIn', 'true', max_age=10000)
-            resp.set_cookie('user', username, max_age=10000)
-            resp.set_cookie('student_id', str(new_id), max_age=10000)
+            resp.set_cookie('isLoggedIn', 'true')
+            resp.set_cookie('user', username)
+            resp.set_cookie('student_id', str(new_id))
             return resp
             
         except sqlite3.Error as e:
@@ -209,6 +221,8 @@ def login():
         conn.close()
         
         if user:
+            print(user['sID'])
+            print("USER ID: " + str(user['sID']))
             resp = make_response("success")
             resp.set_cookie('isLoggedIn', 'true', max_age=10000)
             resp.set_cookie('user', username, max_age=10000)
