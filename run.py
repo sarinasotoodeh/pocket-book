@@ -51,27 +51,40 @@ def map_side_wasm():
 def all_schedules():
     print("Fetching all schedules from the database")
     conn = get_db_connection()
+    sID = request.cookies.get("student_id")
+    if not sID:
+        sID = -1
 
     schedules = conn.execute("""
-        SELECT c.*, r.building_name, r.room_number, r.room_name
+        SELECT c.*, r.building_name, r.room_number, r.room_name, 
+            CASE 
+                WHEN s.sID IS NOT NULL THEN 1
+                ELSE 0
+            END AS has_class
         FROM classes c
         JOIN rooms r ON c.rID = r.rID
+        LEFT JOIN student_classes s ON s.cID = c.cID AND s.sID = ?
         ORDER BY r.building_name, r.room_number, c.day, c.start_time;
-    """).fetchall()
+    """, sID).fetchall()
 
     conn.close()
 
     return render_template("schedules.html", schedules=schedules, mode="all")
 
 
-@app.route("/my-schedule/<int:student_id>")
-def my_schedule(student_id):
-    print(f"Fetching schedule for student_id={student_id} from the database")
+@app.route("/my-schedule")
+def my_schedule():
+    student_id = request.cookies.get('student_id')
+    if student_id:
+        print(f"Fetching schedule for student_id={student_id} from the database")
+    else:
+        print("Not logged in yet")
+
     conn = get_db_connection()
     # after log in is implemented: student_id = session["student_id"] 
 
     schedules = conn.execute("""
-        SELECT c.*, r.building_name, r.room_number, r.room_name
+        SELECT c.*, r.building_name, r.room_number, r.room_name, 1 as has_class
         FROM classes c
         JOIN rooms r ON c.rID = r.rID
         JOIN student_classes sc ON c.cID = sc.cID

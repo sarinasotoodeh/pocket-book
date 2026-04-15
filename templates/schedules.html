@@ -34,6 +34,7 @@
                 <th>Room</th>
                 <th>Day</th>
                 <th>Time</th>
+                <th></th>
             </tr>
 
             {% for row in schedules %}
@@ -44,6 +45,11 @@
                 <td>{{ row.building_name }} {{ row.room_number }}</td>
                 <td>{{ row.day }}</td>
                 <td>{{ row.start_time }} - {{ row.end_time }}</td>
+                {% if not row.has_class %}
+                    <td><button class="schedule-button" id="{{'btn' + row.cID|string}}" onclick="schedule_add({{ row.cID }})"><p>Add to schedule</p></button></td>
+                {% else %}
+                    <td><button class="schedule-button-inverse" id="{{'btn' + row.cID|string}}" onclick="schedule_remove({{ row.cID }})"><p>Remove course</p></button></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </table>
@@ -85,6 +91,24 @@
             };
             return map[key] || d;
         };
+
+        function schedule_add(cID){
+             console.log("will add " + cID)
+             var btn = document.getElementById('btn'+cID)
+             btn.classList.toggle("schedule-button-inverse")
+             btn.classList.toggle("schedule-button")
+             btn.innerText = "Remove course"
+             btn.onclick = function() { schedule_remove(cID); };
+        }
+
+        function schedule_remove(cID){
+            console.log("will remove " + cID)
+            var btn = document.getElementById('btn'+cID)
+             btn.classList.toggle("schedule-button-inverse")
+             btn.classList.toggle("schedule-button")
+             btn.innerText = "Add to schedule"
+             btn.onclick = function() { schedule_add(cID); };
+        }
 
         function renderWeeklyView() {
             const container = document.getElementById('weekly-schedule');

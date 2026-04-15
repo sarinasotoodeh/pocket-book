@@ -135,6 +135,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const display = hour % 12 === 0 ? 12 : hour % 12;
         return `${display}:${m} ${suffix}`;
     }
+
+    function schedule_btn_click(cID){
+        console.log(cID)
+    }
 });
 document.getElementById('table-view-btn').addEventListener('click', () => {
     document.getElementById('table-view').style.display = 'block';
