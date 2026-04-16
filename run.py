@@ -81,8 +81,11 @@ def has_schedule(sID:int, cID:int)->bool:
                        """, sID, cID,).fetchall()
     return has.is_empty()
     
-
-def add_schedule(sID:int, cID:int):
+@app.route('/add_schedule/<int:cID>', methods=["POST"])
+def add_schedule(cID:int):
+    sID = request.cookies.get('student_id')
+    if not sID:
+        return
     if has_schedule(sID, cID):
         return
     conn = get_db_connection()
@@ -95,7 +98,11 @@ def add_schedule(sID:int, cID:int):
     conn.commit()
     conn.close()
 
-def remove_schedule(sID:int, cID:int):
+@app.route('/remove_schedule/<int:cID>', methods=["POST"])
+def remove_schedule(cID:int):
+    sID = request.cookies.get('student_id')
+    if not sID:
+        return
     if not has_schedule(sID, cID):
         return
     conn = get_db_connection()
@@ -107,8 +114,6 @@ def remove_schedule(sID:int, cID:int):
     curr.close()
     conn.commit()
     conn.close()
-
-
 
 @app.route("/my-schedule")
 def my_schedule():
