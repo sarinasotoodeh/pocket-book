@@ -92,7 +92,14 @@
             return map[key] || d;
         };
 
-        function schedule_add(cID){
+        async function schedule_add(cID){
+			try {
+				const response = await fetch('/add_schedule/'+string(cID);
+    
+				if (!response.ok) {
+				throw new Error(`Server failed to add new row to schedule`);
+			}
+			
              console.log("will add " + cID)
              var btn = document.getElementById('btn'+cID)
              btn.classList.toggle("schedule-button-inverse")
@@ -101,7 +108,14 @@
              btn.onclick = function() { schedule_remove(cID); };
         }
 
-        function schedule_remove(cID){
+        async function schedule_remove(cID){
+			try {
+				const response = await fetch('/remove_schedule/'+string(cID);
+    
+				if (!response.ok) {
+				throw new Error(`Server failed to remove row from schedule`);
+			}
+		
             console.log("will remove " + cID)
             var btn = document.getElementById('btn'+cID)
              btn.classList.toggle("schedule-button-inverse")
