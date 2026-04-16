@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, send_from_directory, make_response
+from flask import Flask, render_template, request, send_from_directory, make_response, flash, url_for, redirect
 import sqlite3
 from collections import defaultdict
 
 app = Flask(__name__)
+app.secret_key = "super_secret_key"
 
 DATABASE = "Updated Database/database.db"
 
@@ -252,6 +253,15 @@ def login():
         
         return "invalid"
     return render_template('login.html')
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    flash("You have successfully logged out.")
+    resp = make_response(redirect(url_for("login")))
+    resp.set_cookie('isLoggedIn', 'false', max_age=0)
+    resp.set_cookie('user', '', max_age=0)
+    resp.set_cookie('student_id', '', max_age=0)
+    return resp
 
 if __name__ == "__main__":
     app.run(debug=True)

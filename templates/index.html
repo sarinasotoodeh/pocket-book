@@ -19,10 +19,16 @@
                 <img class="logo" src="../static/images/logo.png" alt="UofT Logo">
             </picture>
         </a>
+        {% if student_number == -1 %}
         <div class="auth">
             <a href="/signup">Sign Up</a>
             <a href="/login">Log In</a>
         </div>
+        {% else %}
+        <div class="auth">
+            <a href="/logout">Log Out</a>
+        </div>
+        {% endif %}
     </header>
 
     <main>
@@ -39,10 +45,10 @@
                     <iframe src="map.html" title="The Map" width="100%"> </iframe>
                 </div>
                 <div class="item" id="all-schedules-container">
-                    <iframe src="schedules" title="All Schedules" width="100%"> </iframe>
+                    <iframe id = "all_iframe" src="schedules" title="All Schedules" width="100%"> </iframe>
                 </div>
                 <div class="item" id="my-schedule-container">
-                    <iframe src="my-schedule" title="My Schedule" width="100%"> </iframe>
+                    <iframe id = "my_iframe" src="my-schedule" title="My Schedule" width="100%"> </iframe>
                 </div>
                 <div class="item" id="services-container">
                     <iframe src="services.html" title="Services" width="100%"> </iframe>

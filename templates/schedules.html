@@ -109,8 +109,7 @@
             btn.classList.toggle("schedule-button");
             btn.innerText = "Remove course";
             btn.onclick = function () { schedule_remove(cID); };
-            window.parent.location.reload();
-            window.top.location.href = "/my-schedule";
+            
         }
 
         function schedule_remove(cID) {
@@ -123,8 +122,8 @@
             btn.classList.toggle("schedule-button");
             btn.innerText = "Add to schedule";
             btn.onclick = function () { schedule_add(cID); };
-            window.parent.location.reload();
-            window.top.location.href = "/my-schedule";
+            window.location.reload(true)
+         
         }
 
         function renderWeeklyView() {
