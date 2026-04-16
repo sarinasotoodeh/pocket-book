@@ -73,47 +73,55 @@ def all_schedules():
 
 def has_schedule(sID:int, cID:int)->bool:
     conn = get_db_connection()
-    curr = conn.cursor
+    curr = conn.cursor()
 
     has = curr.execute("""
                        SELECT * FROM student_classes
                        WHERE sID = ? AND cID = ?;
-                       """, sID, cID,).fetchall()
-    return has.is_empty()
+                       """, (sID, cID)).fetchone()
+    print(has)
+    conn.close()
+    return has is not None
     
-@app.route('/add_schedule/<int:cID>', methods=["POST"])
+@app.route('/add_schedule/<int:cID>', methods=["GET"])
 def add_schedule(cID:int):
     sID = request.cookies.get('student_id')
+    print(f"adding {sID} {cID}")
     if not sID:
-        return
+        print("Not logged in error")
+        return "not logged in"
     if has_schedule(sID, cID):
-        return
+        print("Already added course error")
+        return "eror"
     conn = get_db_connection()
-    curr = conn.cursor
+    curr = conn.cursor()
     curr.execute("""
                 INSERT INTO student_classes (sID, cID)
                 VALUES (?, ?);
-                """, sID, cID)
+                """, (sID, cID))
     curr.close()
     conn.commit()
     conn.close()
+    return make_response("success")
 
-@app.route('/remove_schedule/<int:cID>', methods=["POST"])
+@app.route('/remove_schedule/<int:cID>', methods=["GET"])
 def remove_schedule(cID:int):
     sID = request.cookies.get('student_id')
+    print(f"removing {sID} {cID}")
     if not sID:
         return
     if not has_schedule(sID, cID):
         return
     conn = get_db_connection()
-    curr = conn.cursor
+    curr = conn.cursor()
     curr.execute("""
                 DELETE FROM student_classes
-                VALUES (?, ?);
-                """, sID, cID)
+                WHERE sID = ? AND cID = ?;
+                """, (sID, cID))
     curr.close()
     conn.commit()
     conn.close()
+    return make_response("success")
 
 @app.route("/my-schedule")
 def my_schedule():

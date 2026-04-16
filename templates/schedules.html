@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    
+
     <h1>
         {% if mode == "all" %}
         All Class Schedules
@@ -46,9 +46,15 @@
                 <td>{{ row.day }}</td>
                 <td>{{ row.start_time }} - {{ row.end_time }}</td>
                 {% if not row.has_class %}
-                    <td><button class="schedule-button" id="{{'btn' + row.cID|string}}" onclick="schedule_add({{ row.cID }})"><p>Add to schedule</p></button></td>
+                <td><button class="schedule-button" id="{{'btn' + row.cID|string}}"
+                        onclick="schedule_add({{ row.cID }})">
+                        <p>Add to schedule</p>
+                    </button></td>
                 {% else %}
-                    <td><button class="schedule-button-inverse" id="{{'btn' + row.cID|string}}" onclick="schedule_remove({{ row.cID }})"><p>Remove course</p></button></td>
+                <td><button class="schedule-button-inverse" id="{{'btn' + row.cID|string}}"
+                        onclick="schedule_remove({{ row.cID }})">
+                        <p>Remove course</p>
+                    </button></td>
                 {% endif %}
             </tr>
             {% endfor %}
@@ -57,23 +63,23 @@
 
     <div id="weekly-view" class="table-container" style="display:none;">
         <div id="weekly-schedule">
-            
+
         </div>
     </div>
 
     <script>
         const scheduleData = [
             {% for row in schedules %}
-            {
-                course: "{{ row.dept }}{{ row.code }}",
+        {
+            course: "{{ row.dept }}{{ row.code }}",
                 section: "{{ row.section_code }}",
-                instructor: "{{ row.instructor }}",
-                room: "{{ row.building_name }} {{ row.room_number }}",
-                delivery: "{{ row.delivery_mode }}",
-                day: "{{ row.day }}",
-                time: "{{ row.start_time }} - {{ row.end_time }}"
-            }{% if not loop.last %},{% endif %}
-            {% endfor %}
+                    instructor: "{{ row.instructor }}",
+                        room: "{{ row.building_name }} {{ row.room_number }}",
+                            delivery: "{{ row.delivery_mode }}",
+                                day: "{{ row.day }}",
+                                    time: "{{ row.start_time }} - {{ row.end_time }}"
+        } {% if not loop.last %}, {% endif %}
+        {% endfor %}
         ];
 
         const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -92,41 +98,37 @@
             return map[key] || d;
         };
 
-        async function schedule_add(cID){
-			try {
-				const response = await fetch('/add_schedule/'+string(cID);
-    
-				if (!response.ok) {
-				throw new Error(`Server failed to add new row to schedule`);
-			}
-			
-             console.log("will add " + cID)
-             var btn = document.getElementById('btn'+cID)
-             btn.classList.toggle("schedule-button-inverse")
-             btn.classList.toggle("schedule-button")
-             btn.innerText = "Remove course"
-             btn.onclick = function() { schedule_remove(cID); };
+        function schedule_add(cID) {
+
+            fetch('/add_schedule/' + String(cID));
+
+
+            console.log("will add " + cID);
+            var btn = document.getElementById('btn' + cID);
+            btn.classList.toggle("schedule-button-inverse");
+            btn.classList.toggle("schedule-button");
+            btn.innerText = "Remove course";
+            btn.onclick = function () { schedule_remove(cID); };
         }
 
-        async function schedule_remove(cID){
-			try {
-				const response = await fetch('/remove_schedule/'+string(cID);
-    
-				if (!response.ok) {
-				throw new Error(`Server failed to remove row from schedule`);
-			}
-		
-            console.log("will remove " + cID)
-            var btn = document.getElementById('btn'+cID)
-             btn.classList.toggle("schedule-button-inverse")
-             btn.classList.toggle("schedule-button")
-             btn.innerText = "Add to schedule"
-             btn.onclick = function() { schedule_add(cID); };
+        function schedule_remove(cID) {
+
+            // Added 'async' and fixed 'String'
+            fetch('/remove_schedule/' + String(cID));
+
+
+
+            console.log("will remove " + cID); // Fixed 'log' to 'console.log'
+            var btn = document.getElementById('btn' + cID);
+            btn.classList.toggle("schedule-button-inverse");
+            btn.classList.toggle("schedule-button");
+            btn.innerText = "Add to schedule";
+            btn.onclick = function () { schedule_add(cID); };
         }
 
         function renderWeeklyView() {
             const container = document.getElementById('weekly-schedule');
-            const grouped = {}; 
+            const grouped = {};
             dayOrder.forEach(day => grouped[day] = []);
             scheduleData.forEach(item => {
                 const dayName = normalizeDay(item.day);
