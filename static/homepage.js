@@ -87,3 +87,5 @@ function refresh_schedule() {
 	all.attr('src', all.attr('src'));
 	my.attr('src', my.attr('src'));
 }
+
+const inteval = setInterval(refresh_schedule, 500)
