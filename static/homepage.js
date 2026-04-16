@@ -78,3 +78,12 @@ function show_services() {
     active_container = services_container
     add_classes()
 }
+
+function refresh_schedule() {
+	//Refreshes the schedules
+	console.log("Refreshing schedule iframes")
+	var all = document.getElementById("all_iframe")
+	var my = document.getElementById("my_iframe")
+	all.attr('src', all.attr('src'));
+	my.attr('src', my.attr('src'));
+}
