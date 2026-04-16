@@ -71,6 +71,44 @@ def all_schedules():
 
     return render_template("schedules.html", schedules=schedules, mode="all")
 
+def has_schedule(sID:int, cID:int)->bool:
+    conn = get_db_connection()
+    curr = conn.cursor
+
+    has = curr.execute("""
+                       SELECT * FROM student_classes
+                       WHERE sID = ? AND cID = ?;
+                       """, sID, cID,).fetchall()
+    return has.is_empty()
+    
+
+def add_schedule(sID:int, cID:int):
+    if has_schedule(sID, cID):
+        return
+    conn = get_db_connection()
+    curr = conn.cursor
+    curr.execute("""
+                INSERT INTO student_classes (sID, cID)
+                VALUES (?, ?);
+                """, sID, cID)
+    curr.close()
+    conn.commit()
+    conn.close()
+
+def remove_schedule(sID:int, cID:int):
+    if not has_schedule(sID, cID):
+        return
+    conn = get_db_connection()
+    curr = conn.cursor
+    curr.execute("""
+                DELETE FROM student_classes
+                VALUES (?, ?);
+                """, sID, cID)
+    curr.close()
+    conn.commit()
+    conn.close()
+
+
 
 @app.route("/my-schedule")
 def my_schedule():
