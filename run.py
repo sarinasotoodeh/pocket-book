@@ -65,7 +65,7 @@ def all_schedules():
         JOIN rooms r ON c.rID = r.rID
         LEFT JOIN student_classes s ON s.cID = c.cID AND s.sID = ?
         ORDER BY r.building_name, r.room_number, c.day, c.start_time;
-    """, sID).fetchall()
+    """, (sID,)).fetchall()
 
     conn.close()
 
@@ -171,50 +171,7 @@ def services():
 
 # Login + Register + Add schedule (Tuna + Rhianna)
 
-@app.route("/add_schedule", methods=['GET', 'POST'])
-def add_schedule():
-    # We still need the student_id to know WHOSE schedule to add to
-    student_id = request.cookies.get('student_id')
-    
-    if request.method == 'POST':
-        # Steal data from the form
-        dept = request.form.get('dept')
-        code = request.form.get('code')
-        section = request.form.get('section')
-        room_id = request.form.get('rID')
-        day = request.form.get('day')
-        start = request.form.get('start_time')
-        end = request.form.get('end_time')
 
-        conn = get_db_connection()
-        try:
-            cursor = conn.cursor()
-            
-            # Insert the class into the main pool
-            cursor.execute('''
-                INSERT INTO classes (code, dept, section, rID, day, start_time, end_time) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (code, dept, section, room_id, day, start, end))
-            
-            new_class_id = cursor.lastrowid 
-
-            # Link this specific student to that class
-            cursor.execute('''
-                INSERT INTO student_classes (sID, cID) 
-                VALUES (?, ?)
-            ''', (student_id, new_class_id))
-            
-            conn.commit()
-            return "success" # JS is waiting for this string
-            
-        except Exception as e:
-            print(f"Error: {e}")
-            return "error"
-        finally:
-            conn.close()
-
-    # If it's a GET request, just show the page hehe haha
-    return render_template('add_schedule.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
