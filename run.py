@@ -65,7 +65,7 @@ def all_schedules():
         JOIN rooms r ON c.rID = r.rID
         LEFT JOIN student_classes s ON s.cID = c.cID AND s.sID = ?
         ORDER BY r.building_name, r.room_number, c.day, c.start_time;
-    """, sID).fetchall()
+    """, (sID,)).fetchall()
 
     conn.close()
 
