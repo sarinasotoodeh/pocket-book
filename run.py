@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, send_from_directory, make_response
+from flask import Flask, render_template, request, send_from_directory, make_response, redirect, url_for, flash
 import sqlite3
 from collections import defaultdict
 
 app = Flask(__name__)
+app.secret_key = "super_secret_key"
 
 DATABASE = "Updated Database/database.db"
 
@@ -14,14 +15,15 @@ def get_db_connection():
 
 @app.route("/")
 def home():
-    sID = request.cookies.get('student_id')
-    if sID:
-        print(f"Loading index with sID: {sID}")
-        return render_template("index.html", student_number = sID)
-    else:
-        # sID = -1 represents not logged in
+    sID_raw = request.cookies.get("student_id")
+    try:
+        student_number = int(sID_raw)
+        print(f"Loading index with sID: {student_number}")
+        return render_template("index.html", student_number = student_number)
+    except (TypeError, ValueError):
+        student_number = -1
         print(f"Loading index with sID: -1 so no user :) hehe")
-        return render_template("index.html", student_number = -1)
+        return render_template("index.html", student_number = student_number)
 
 @app.route("/map.html")
 def map_html():
@@ -51,22 +53,24 @@ def map_side_wasm():
 def all_schedules():
     print("Fetching all schedules from the database")
     conn = get_db_connection()
-    sID = request.cookies.get("student_id")
-    if not sID:
+    sID_raw = request.cookies.get("student_id")
+
+    try:
+        sID = int(sID_raw) if sID_raw is not None else -1
+    except (TypeError, ValueError):
         sID = -1
 
     schedules = conn.execute("""
         SELECT c.*, r.building_name, r.room_number, r.room_name, 
-            CASE 
-                WHEN s.sID IS NOT NULL THEN 1
-                ELSE 0
-            END AS has_class
+        CASE 
+            WHEN s.sID IS NOT NULL THEN 1
+            ELSE 0
+        END AS has_class
         FROM classes c
         JOIN rooms r ON c.rID = r.rID
         LEFT JOIN student_classes s ON s.cID = c.cID AND s.sID = ?
-        ORDER BY r.building_name, r.room_number, c.day, c.start_time;
-    """, (sID,)).fetchall()
-
+        ORDER BY r.building_name, r.room_number, c.day, c.start_time
+        """, (sID,)).fetchall()
     conn.close()
 
     return render_template("schedules.html", schedules=schedules, mode="all")
@@ -81,7 +85,6 @@ def my_schedule():
         print("Not logged in yet")
 
     conn = get_db_connection()
-    # after log in is implemented: student_id = session["student_id"] 
 
     schedules = conn.execute("""
         SELECT c.*, r.building_name, r.room_number, r.room_name, 1 as has_class
@@ -244,6 +247,16 @@ def login():
         
         return "invalid"
     return render_template('login.html')
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    flash("You have successfully logged out.")
+    resp = make_response(redirect(url_for("login")))
+    resp.set_cookie('isLoggedIn', 'false', max_age=0)
+    resp.set_cookie('user', '', max_age=0)
+    resp.set_cookie('student_id', '', max_age=0)
+    return resp
+
 
 if __name__ == "__main__":
     app.run(debug=True)

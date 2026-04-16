@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="../static/accounts.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
     <header>
         <a href="{{ url_for('home') }}"><img class="logo" src="../static/images/logo.png" alt="Logo"></a>
     </header>
     <main>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script>
+            alert("{{ messages[0] }}");
+        </script>
+        {% endif %}
+        {% endwith %}
         <section class="banner"></section>
-        
+
         <section class="container">
             <div class="form-box">
                 <h2>Login</h2>
