@@ -63,6 +63,7 @@ function show_all_schedules(){
     active_btn = all_schedules_btn
     active_container = all_schedules_container
     add_classes()
+    refresh_schedule()
 }
 
 function show_my_schedule(){
@@ -70,6 +71,7 @@ function show_my_schedule(){
     active_btn = my_schedule_btn
     active_container = my_schedule_container
     add_classes()
+    refresh_schedule()
 }
 
 function show_services() {
@@ -84,7 +86,7 @@ function refresh_schedule() {
 	console.log("Refreshing schedule iframes")
 	var all = document.getElementById("all_iframe")
 	var my = document.getElementById("my_iframe")
-	all.attr('src', all.attr('src'));
-	my.attr('src', my.attr('src'));
+	all.src = "schedules"
+	my.src = "my-schedule"
 }
 
