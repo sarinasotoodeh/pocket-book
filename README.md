@@ -41,11 +41,12 @@ python run.py
 
 Then open `http://127.0.0.1:5000` in your browser.
 
-## Screenshots / demo
-
-*(coming soon)*
+## demo
+https://drive.google.com/file/d/1S8eeJlPVdzCCkCpVJAgg89-siTAflwvz/view?usp=sharing
 
 ## Team
-
-Built by a 5-person team for CSCB20 (Jan – May 2026).
-
+1. Sarina Sotoodeh
+2. Tuna kitis
+3. Sophia Wu
+4. Rhianna Saha
+5. Sana Shahid
